@@ -28,11 +28,16 @@ public:
 	vector<short> Getvaldown();
 	BigInt GetBigIntup();
 	BigInt GetBigIntdown();
-	string Getvalreal(int precision=100);
+	string Getvalreal();
+
+	static unsigned int precision;
+
 private:
+	BigInt valup, valdown;
+
 	bool checkbig(const BigDecimal&, const BigDecimal&, bool isunsigned = false);//true = лe  false = лс
 	void erasezero(BigDecimal&);
-	string inputprettify(string);
+	string stringprettify(string);
 	BigInt gcd(BigInt, BigInt);
-	BigInt valup,valdown;
+	void decreduce();
 };

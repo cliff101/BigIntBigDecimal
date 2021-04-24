@@ -6,17 +6,21 @@ BigInt::BigInt() {
 	sign = true;
 }
 BigInt::BigInt(string in) {
-	in = inputprettify(in);
-	sign = (in[0] != '-');
-	if (!sign) {
-		in.erase(in.begin());
-	}
-	else if (in[0] == '+') {
+	in = stringprettify(in);
+	string strsign = "";
+	if (in[0] == '+' || in[0] == '-') {
+		strsign = in[0];
 		in.erase(in.begin());
 	}
 	val = vector<short>(in.length());
 	for (unsigned long long int i = 0; i < in.length(); i++) {
 		val[i] = in[i] - '0';
+	}
+	if (strsign == "-") {
+		sign = false;
+	}
+	else {
+		sign = true;
 	}
 	erasezero(*this);
 }
@@ -25,18 +29,21 @@ BigInt::BigInt(const BigInt& in) {
 	sign = in.sign;
 }
 BigInt::BigInt(int ini) {
-	string in = inputprettify(to_string(ini));
-	in = inputprettify(in);
-	sign = (in[0] != '-');
-	if (!sign) {
-		in.erase(in.begin());
-	}
-	else if (in[0] == '+') {
+	string in = stringprettify(to_string(ini));
+	string strsign = "";
+	if (in[0] == '+' || in[0] == '-') {
+		strsign = in[0];
 		in.erase(in.begin());
 	}
 	val = vector<short>(in.length());
 	for (unsigned long long int i = 0; i < in.length(); i++) {
 		val[i] = in[i] - '0';
+	}
+	if (strsign == "-") {
+		sign = false;
+	}
+	else {
+		sign = true;
 	}
 	erasezero(*this);
 }
@@ -46,23 +53,43 @@ BigInt::BigInt(const BigDecimal& in) {
 }
 
 BigInt BigInt::operator=(string in) {
-	in = inputprettify(in);
-	sign = (in[0] != '-');
-	if (!sign) {
-		in.erase(in.begin());
-	}
-	else if (in[0] == '+') {
+	in = stringprettify(in);
+	string strsign = "";
+	if (in[0] == '+' || in[0] == '-') {
+		strsign = in[0];
 		in.erase(in.begin());
 	}
 	val = vector<short>(in.length());
 	for (unsigned long long int i = 0; i < in.length(); i++) {
 		val[i] = in[i] - '0';
 	}
+	if (strsign == "-") {
+		sign = false;
+	}
+	else {
+		sign = true;
+	}
 	erasezero(*this);
 	return *this;
 }
-BigInt BigInt::operator=(int in) {
-	*this = inputprettify(to_string(in));
+BigInt BigInt::operator=(int ini) {
+	string in = stringprettify(to_string(ini));
+	string strsign = "";
+	if (in[0] == '+' || in[0] == '-') {
+		strsign = in[0];
+		in.erase(in.begin());
+	}
+	val = vector<short>(in.length());
+	for (unsigned long long int i = 0; i < in.length(); i++) {
+		val[i] = in[i] - '0';
+	}
+	if (strsign == "-") {
+		sign = false;
+	}
+	else {
+		sign = true;
+	}
+	erasezero(*this);
 	return *this;
 }
 BigInt BigInt::operator=(const BigDecimal& in) {
@@ -91,6 +118,7 @@ BigInt BigInt::operator+(const BigInt& in) {
 	int hold = 0;
 	while (i >= 0 || j >= 0) {
 		result.insert(result.begin(), (i >= 0 ? val[i] : 0) + (j >= 0 ? in.val[j] : 0) + hold);
+		hold = 0;
 		if (result[0] > 9) {
 			hold = result[0] / 10;
 			result[0] -= hold * 10;
@@ -263,6 +291,7 @@ BigInt BigInt::operator+=(const BigInt& in) {
 	int hold = 0;
 	while (i >= 0 || j >= 0) {
 		result.insert(result.begin(), (i >= 0 ? val[i] : 0) + (j >= 0 ? in.val[j] : 0) + hold);
+		hold = 0;
 		if (result[0] > 9) {
 			hold = result[0] / 10;
 			result[0] -= hold * 10;
@@ -401,36 +430,37 @@ BigInt BigInt::operator++(int) {
 	return temp;
 }
 
-BigDecimal BigInt::pow(BigDecimal in, int precision) {
+BigDecimal BigInt::pow(BigDecimal in) {
+	BigInt out = *this;
 	BigInt up = in.GetBigIntup();
 	BigInt down = in.GetBigIntdown();
 	if (down != 1 && down != 2) {
-		return *this;
+		return out;
 	}
 	if (up > 0) {
-		BigInt cp = *this;
+		BigInt cp = out;
 		for (BigInt i = 0; i < up - 1; i += 1) {
-			*this *= cp;
+			out *= cp;
 		}
 	}
 	else {
-		*this = 1;
+		out = 1;
 	}
 
 	if (down == 2) {
-		vector<BigInt> part(val.size() / 2 + val.size() % 2);
+		vector<BigInt> part(out.val.size() / 2 + out.val.size() % 2);
 		BigInt besub(0), sub(0), res(0), resdown(1), base(0), thisres(0);
-		for (long long int i = static_cast<long long>(val.size()) - 1; i >= 0; i -= 2) {
+		for (long long int i = static_cast<long long>(out.val.size()) - 1; i >= 0; i -= 2) {
 			if (i - 1 >= 0) {
-				part[i / 2] = val[i] + 10 * val[i - 1];
+				part[i / 2] = out.val[i] + 10 * out.val[i - 1];
 			}
 			else {
-				part[0] = val[i];
+				part[0] = out.val[i];
 			}
 		}
 		res += long long(std::pow(part[0].Getint(), 0.5));
 		besub = part[0] - res * res;
-		for (unsigned long long int i = 1; i < (static_cast<unsigned long long>(val.size()) + 1) / 2; i++) {
+		for (unsigned long long int i = 1; i < (static_cast<unsigned long long>(out.val.size()) + 1) / 2; i++) {
 			base = res * 20;
 			besub = besub * 100 + part[i];
 
@@ -448,10 +478,11 @@ BigDecimal BigInt::pow(BigDecimal in, int precision) {
 			return BigDecimal(res);
 		}
 		else {
-			for (int i = 0; i < precision; i++) {
-				resdown *= 10;
+			for (int i = 0; i < BigDecimal::precision; i++) {
+				resdown.val.push_back(0);
 				base = res * 20;
-				besub = besub * 100;
+				besub.val.push_back(0);
+				besub.val.push_back(0);
 
 				thisres = besub / base;
 				sub = (base + thisres) * thisres;
@@ -460,13 +491,14 @@ BigDecimal BigInt::pow(BigDecimal in, int precision) {
 					sub = (base + thisres) * thisres;
 				}
 
-				res = res * 10 + thisres;
+				res.val.push_back(0);
+				res += thisres;
 				besub -= sub;
 			}
 			return BigDecimal(res, resdown);
 		}
 	}
-	return BigDecimal(*this);
+	return BigDecimal(out);
 }
 
 //等於回傳true
@@ -544,25 +576,30 @@ void BigInt::erasezero(BigInt& a) {
 		a.sign = true;
 	}
 }
-string BigInt::inputprettify(string in) {
+string BigInt::stringprettify(string in) {
+	string sign = "";
+	if (in[0] == '+' || in[0] == '-') {
+		sign = in[0];
+		in.erase(in.begin());
+	}
 	while (in.length() > 0 && in[0] == '0') {
 		in.erase(in.begin());
 	}
 	for (unsigned long long int i = 0; i < in.size(); i++) {
 		if (in[i] == '.') {
-			in = in.substr(0, i - 1);
+			in = in.substr(0, i);
+			break;
 		}
 	}
 	if (in.length() == 0) {
 		in.push_back('0');
 	}
+	in = sign + in;
 	return in;
 }
+
 vector<short> BigInt::Getval() {
 	return val;
-}
-bool BigInt::Getsign() {
-	return sign;
 }
 string BigInt::Getvalreal() {
 	string result = "";
@@ -584,4 +621,10 @@ long long BigInt::Getint() {
 		res *= -1;
 	}
 	return res;
+}
+bool BigInt::Getsign() {
+	return sign;
+}
+void BigInt::Setsign(bool in) {
+	sign = in;
 }

@@ -5,6 +5,7 @@
 #include <map>
 #include <vector>
 #include <string>
+#include <windows.h>
 
 using namespace std;
 
@@ -42,10 +43,10 @@ private:
 	map<string, BigDecimal> BigDecimalVar;
 	string getallvar();
 
-	retmsg ProceedCommand(string& cmd, unsigned long long& position, int priority,bool isgiveval1=false, BigValue giveval1=BigValue());
+	retmsg ProceedCommand(string& cmd, unsigned long long& position, int priority, bool isgiveval1 = false, BigValue giveval1 = BigValue());
 	retmsg getvalue(string& cmd, unsigned long long& position);
 	retmsg getoperator(string& cmd, unsigned long long& position);
-	retmsg calculate(BigValue& val1,string& operatorval, BigValue& val2);
+	retmsg calculate(BigValue& val1, string& operatorval, BigValue& val2);
 	retmsg stagecalc(BigValue& val1);
 	bool isnumeric(char c);
 	bool isint(string& in);
