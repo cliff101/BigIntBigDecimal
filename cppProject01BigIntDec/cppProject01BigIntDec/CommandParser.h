@@ -34,23 +34,26 @@ private:
 	};
 	struct retmsg {
 	public:
+		short mode = 0;//0 = normal  1 = set  2 = delete
 		BigValue value;
 		int priority = 0;
-		bool haveoutput = true;
 		bool ok = true;
 		string errmsg = "";
 		string description = "";
+		string varname = "";
 	};
-	map<string, BigInt> BigIntVar;
-	map<string, BigDecimal> BigDecimalVar;
+	map<string, BigValue> BigValueVar;
 	string getallvar();
 
 	retmsg ProceedCommand(string& cmd, unsigned long long& position, int priority, bool isgiveval1 = false, BigValue giveval1 = BigValue());
-	retmsg getvalue(string& cmd, unsigned long long& position);
+	retmsg getvalue(string& cmd, unsigned long long& position,bool varerr = true);
 	retmsg getoperator(string& cmd, unsigned long long& position);
 	retmsg calculate(BigValue& val1, string& operatorval, BigValue& val2);
 	retmsg stagecalc(BigValue& val1);
 	bool isnumeric(char c);
+	bool isalphabetic(char c);
 	bool isint(string& in);
+	retmsg checkset(string& in, unsigned long long int& i);
 	void blandslide(string& cmd, unsigned long long& position);
+	retmsg createerrmsg(unsigned long long int i, string info);
 };

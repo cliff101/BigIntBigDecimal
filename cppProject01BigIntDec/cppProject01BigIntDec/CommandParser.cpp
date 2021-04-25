@@ -8,20 +8,43 @@ void setConsoleColor(WORD c)
 {
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), c);
 }
-
 void signal_callback_handler(int signum) {
 	keeprun = false;
 }
+CommandParser::retmsg CommandParser::createerrmsg(unsigned long long int i, string info) {
+	retmsg msg;
+	msg.ok = false;
+	msg.errmsg = "";
+	for (unsigned long long int j = 0; j < i; j++) {
+		msg.errmsg += " ";
+	}
+	msg.errmsg += BIAS_BLANK + "^~~  " + info;
+	return msg;
+}
 
 CommandParser::CommandParser() {
-	BigIntVar = map<string, BigInt>();
-	BigDecimalVar = map<string, BigDecimal>();
+	BigValueVar = map<string, CommandParser::BigValue>();
 }
 void CommandParser::Inputcommand(string in) {
 	signal(SIGINT, signal_callback_handler);
 
 	unsigned long long i = 0;
 	keeprun = true;
+	retmsg setmode = checkset(in,i);
+	if (setmode.mode == 0) {
+		i = 0;
+	}
+	else if (setmode.mode == 3) {
+		if (BigValueVar.find(setmode.varname) == BigValueVar.end()) {
+			setConsoleColor(FOREGROUND_RED);
+			cout << createerrmsg(i-1,"嘗試刪除未命名的變數").errmsg << endl;
+			setConsoleColor(7);
+		}
+		else {
+			BigValueVar.erase(setmode.varname);
+		}
+		return;
+	}
 	retmsg msg = ProceedCommand(in, i, 8);
 	if (!keeprun) {
 		setConsoleColor(6);
@@ -33,16 +56,30 @@ void CommandParser::Inputcommand(string in) {
 		cout << msg.errmsg << endl;
 		setConsoleColor(7);
 	}
-	else if (msg.haveoutput) {
-		if (msg.value.IsInt) {
-			cout << msg.value.BigIntVal.Getvalreal() << endl;
+	else {
+		if (setmode.mode == 1) {
+			BigValueVar[setmode.varname] = msg.value;
+		}
+		else if (setmode.mode == 2) {
+			BigValueVar[setmode.varname] = msg.value;
+			if (setmode.value.IsInt && !BigValueVar[setmode.varname].IsInt) {
+				BigValueVar[setmode.varname].IsInt = true;
+				BigValueVar[setmode.varname].BigIntVal = BigValueVar[setmode.varname].BigDecimalVal;
+			}
+			else if (!setmode.value.IsInt && BigValueVar[setmode.varname].IsInt) {
+				BigValueVar[setmode.varname].IsInt = false;
+				BigValueVar[setmode.varname].BigDecimalVal = BigValueVar[setmode.varname].BigIntVal;
+			}
 		}
 		else {
-			cout << msg.value.BigDecimalVal.Getvalreal() << endl;
+			if (msg.value.IsInt) {
+				cout << msg.value.BigIntVal.Getvalreal() << endl;
+			}
+			else {
+				cout << msg.value.BigDecimalVal.Getvalreal() << endl;
+			}
 		}
-
 	}
-
 }
 
 /*
@@ -116,12 +153,7 @@ CommandParser::retmsg CommandParser::ProceedCommand(string& cmd, unsigned long l
 			else if (msg.description == "!") {
 				msg = stagecalc(value1);
 				if (!msg.ok) {
-					msg.errmsg = "";
-					for (unsigned long long int j = 0; j < i; j++) {
-						msg.errmsg += " ";
-					}
-					msg.errmsg += BIAS_BLANK + "^~~  " + msg.description;
-					return msg;
+					return createerrmsg(i, msg.description);
 				}
 				else {
 					value1 = msg.value;
@@ -153,12 +185,7 @@ CommandParser::retmsg CommandParser::ProceedCommand(string& cmd, unsigned long l
 			retmsg msg2;
 			msg2 = calculate(value1, operatorval, value2);//return時，i停留在operator上
 			if (!msg2.ok) {
-				msg2.errmsg = "";
-				for (unsigned long long int j = 0; j < i; j++) {
-					msg2.errmsg += " ";
-				}
-				msg2.errmsg += BIAS_BLANK + "^~~  " + msg2.description;
-				return msg2;
+				return createerrmsg(i, msg2.description);
 			}
 			else if (msg.description == "endofcmd" || cmd[i - 1] == ')') {
 				return msg2;
@@ -168,6 +195,8 @@ CommandParser::retmsg CommandParser::ProceedCommand(string& cmd, unsigned long l
 			prevpriority = 8;
 		}
 	}
+	retmsg msg;
+	return msg;//impossibel to happen, just for reduce warning
 }
 CommandParser::retmsg CommandParser::getoperator(string& cmd, unsigned long long& i) {
 	blandslide(cmd, i);
@@ -178,13 +207,7 @@ CommandParser::retmsg CommandParser::getoperator(string& cmd, unsigned long long
 		return msg;
 	}
 	if (cmd[i] != '+' && cmd[i] != '-' && cmd[i] != '*' && cmd[i] != '/' && cmd[i] != '^' && cmd[i] != '!' && cmd[i] != '(' && cmd[i] != ')') {
-		msg.ok = false;
-		msg.errmsg = "";
-		for (unsigned long long int j = 0; j < i; j++) {
-			msg.errmsg += " ";
-		}
-		msg.errmsg += BIAS_BLANK + "^~~  無法辨識運算符";
-		return msg;
+		return createerrmsg(i, "無法辨識運算符");
 	}
 	if (cmd[i] == '(') {
 		msg.priority = 1;
@@ -208,40 +231,55 @@ CommandParser::retmsg CommandParser::getoperator(string& cmd, unsigned long long
 	msg.description = cmd[i];
 	return msg;
 }
-CommandParser::retmsg CommandParser::getvalue(string& cmd, unsigned long long& i) {
+CommandParser::retmsg CommandParser::getvalue(string& cmd, unsigned long long& i, bool varerr) {
 	blandslide(cmd, i);
 	retmsg msg;
-	if (cmd[i] == '(') {
+	if (i < cmd.length() && cmd[i] == '(') {
 		msg.ok = true;
 		msg.description = "(";
 		msg.value.IsInt = true;
 		msg.value.BigIntVal = BigInt(1);
 		return msg;
 	}
-	string res = "+";
-	while (cmd[i] == '+' || cmd[i] == '-') {
-		if (cmd[i] == '-' && res[0] == '-' || cmd[i] == '+' && res[0] == '+') {
-			res[0] = '+';
+	string res = "";
+	while (i < cmd.length() && (cmd[i] == '+' || cmd[i] == '-')) {
+		if (cmd[i] == '-' && res == "-" || cmd[i] == '+' && (res == "+"|| res == "")) {
+			res = '+';
 		}
 		else {
-			res[0] = '-';
+			res = '-';
 		}
 		i++;
 		blandslide(cmd, i);
 	}
 	bool first = true,
-		isintbool = true;
-	while (true) {
-		if (isnumeric(cmd[i])) {
-			res += cmd[i];
-			first = false;
-		}
-		else if (cmd[i] == '.') {
-			res += '.';
-			isintbool = false;
+		isintbool = true,
+		isvar = false;
+	if (i < cmd.length() && isalphabetic(cmd[i])) {
+		isvar = true;
+	}
+	while (i < cmd.length()) {
+		if (!isvar) {
+			if (isnumeric(cmd[i])) {
+				res += cmd[i];
+				first = false;
+			}
+			else if (cmd[i] == '.') {
+				res += '.';
+				isintbool = false;
+			}
+			else {
+				break;
+			}
 		}
 		else {
-			break;
+			if (isalphabetic(cmd[i]) || isnumeric(cmd[i])) {
+				res += cmd[i];
+				first = false;
+			}
+			else {
+				break;
+			}
 		}
 		i++;
 	}
@@ -249,33 +287,49 @@ CommandParser::retmsg CommandParser::getvalue(string& cmd, unsigned long long& i
 		msg.description = "(";
 	}
 	else if (first) {
-		msg.ok = false;
-		msg.errmsg = "";
-		for (unsigned long long int j = 0; j < i; j++) {
-			msg.errmsg += " ";
-		}
-		msg.errmsg += BIAS_BLANK + "^~~  須為數值";
-		return msg;
+		return createerrmsg(i, "須為數值");
 	}
 
-	msg.ok = true;
-	if (isintbool) {
-		msg.value.IsInt = true;
-		if (res.length() == 1 && res[0] == '+') {
-			msg.value.BigIntVal = BigInt(1);
-		}
-		else if (res.length() == 1 && res[0] == '-') {
-			msg.value.BigIntVal = BigInt(-1);
+	if (!isvar) {
+		msg.ok = true;
+		if (isintbool) {
+			msg.value.IsInt = true;
+			if (res.length() == 1 && res[0] == '+') {
+				msg.value.BigIntVal = BigInt(1);
+			}
+			else if (res.length() == 1 && res[0] == '-') {
+				msg.value.BigIntVal = BigInt(-1);
+			}
+			else {
+				msg.value.BigIntVal = BigInt(res);
+			}
 		}
 		else {
-			msg.value.BigIntVal = BigInt(res);
+			msg.value.IsInt = false;
+			msg.value.BigDecimalVal = BigDecimal(res);
 		}
+		return msg;
 	}
 	else {
-		msg.value.IsInt = false;
-		msg.value.BigDecimalVal = BigDecimal(res);
+		msg.varname = res;
+		if (BigValueVar.find(res) == BigValueVar.end()) {
+			if (!varerr) {
+				msg.ok = true;
+				msg.errmsg = "";
+				return msg;
+			}
+			else {
+				return createerrmsg(i-1, "未命名的變數");
+			}
+
+		}
+		else {
+			msg.ok = true;
+			msg.value = BigValueVar[res];
+			return msg;
+		}
+
 	}
-	return msg;
 }
 CommandParser::retmsg CommandParser::calculate(BigValue& val1, string& operatorval, BigValue& val2) {
 	retmsg msg;
@@ -351,7 +405,13 @@ void CommandParser::blandslide(string& cmd, unsigned long long& i) {
 	}
 }
 bool CommandParser::isnumeric(char c) {
-	if (c - '0' > 9 || c - '0' < 0) {
+	if (c > '9' || c < '0') {
+		return false;
+	}
+	return true;
+}
+bool CommandParser::isalphabetic(char c) {
+	if (c > 'z' || c < 'a' && c > 'Z' || c < 'A') {
 		return false;
 	}
 	return true;
@@ -363,4 +423,49 @@ bool CommandParser::isint(string& in) {
 		}
 	}
 	return true;
+}
+//mode = 0:normal  mode = 1:set  mode = 2:set specific  mode = 3:del
+CommandParser::retmsg CommandParser::checkset(string& cmd, unsigned long long int& i) {
+	retmsg msg,msg2;
+	msg = getvalue(cmd, i, false);
+	msg.mode = 0;
+	if (i < cmd.length()) {
+		if (msg.varname == "Del") {
+			msg2 = getvalue(cmd, i, false);
+			if (msg2.varname != "") {
+				msg.mode = 3;
+				msg.varname = msg2.varname;
+			}
+			return msg;
+		}
+		else if (msg.varname == "Set") {
+			msg2 = getvalue(cmd, i, false);
+			if (msg2.varname == "Integer") {
+				msg.value.IsInt = true;
+			}
+			else if (msg2.varname == "Decimal") {
+				msg.value.IsInt = false;
+			}
+			else {
+				return msg;
+			}
+			msg2 = getvalue(cmd, i, false);
+			blandslide(cmd, i);
+			if (msg2.varname != "" && i < cmd.length() && cmd[i] == '=') {
+				i++;
+				msg.mode = 2;
+				msg.varname = msg2.varname;
+			}
+			return msg;
+		}
+		else if (msg.varname != "") {
+			blandslide(cmd, i);
+			if (i < cmd.length() && cmd[i] == '=') {
+				i++;
+				msg.mode = 1;
+			}
+		}
+	}
+	
+	return msg;
 }

@@ -248,8 +248,8 @@ string BigDecimal::stringprettify(string in) {
 	if (in.length() == 0) {
 		in.push_back('0');
 	}
-	if (in[0] == '.') {
-		in.pop_back();
+	if (in[in.size()-1] == '.') {
+		in.push_back('0');
 	}
 	in = sign + in;
 	return in;
