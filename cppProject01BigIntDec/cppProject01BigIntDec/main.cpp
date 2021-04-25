@@ -28,7 +28,7 @@ int main() {
 	//d = (c != 0);
 	//a %= 15;
 	//c = a % b;
-	//BigDecimal a("+1.2425345"), b("-1.45435345"), c;
+	//BigDecimal a(BigInt(0)/BigInt(0)), b("-1.45435345"), c;
 	//BigDecimal d(1.234);
 	//d = a;
 	//a = 5;

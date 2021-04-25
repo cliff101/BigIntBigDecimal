@@ -5,6 +5,8 @@ unsigned int BigDecimal::precision = 100;
 BigDecimal::BigDecimal() {
 	valup = BigInt();
 	valdown = BigInt();
+	isinf = false;
+	isundefined = false;
 }
 BigDecimal::BigDecimal(double ind) {
 	string in = stringprettify(to_string(ind));
@@ -23,6 +25,8 @@ BigDecimal::BigDecimal(double ind) {
 	valup = BigInt(in);
 	valdown = BigInt(down);
 	decreduce();
+	isinf = false;
+	isundefined = false;
 }
 BigDecimal::BigDecimal(string in) {
 	in = stringprettify(in);
@@ -41,18 +45,26 @@ BigDecimal::BigDecimal(string in) {
 	valup = BigInt(in);
 	valdown = BigInt(down);
 	decreduce();
+	isinf = false;
+	isundefined = false;
 }
 BigDecimal::BigDecimal(const BigDecimal& in) {
 	valup = BigInt(in.valup);
 	valdown = BigInt(in.valdown);
+	isinf = in.isinf;
+	isundefined = in.isundefined;
 }
 BigDecimal::BigDecimal(const BigInt& in) {
 	valup = in;
 	valdown = 1;
+	isinf = valup.Getinf();
+	isundefined = valup.Getundefined();
 }
 BigDecimal::BigDecimal(const BigInt& in1, const BigInt& in2) {
 	valup = in1;
 	valdown = in2;
+	isinf = false;
+	isundefined = valup.Getundefined() || valdown.Getundefined() || valup.Getinf() && valdown.Getinf() || valup.Getnumlength()==1 && valup==0 && valdown.Getinf();
 	decreduce();
 }
 
@@ -101,9 +113,22 @@ BigDecimal BigDecimal::operator=(const BigInt& in) {
 	return *this;
 }
 
-
 BigDecimal BigDecimal::operator+(const BigDecimal& in) {
-	BigDecimal cp(in), out;
+	BigDecimal cp(in),out;
+	if (isundefined || in.isundefined || isinf && in.isinf && (!valup.Getsign() && cp.valup.Getsign() || valup.Getsign() && !cp.valup.Getsign())) {
+		out.isundefined = true;
+		return out;
+	}
+	else if (isinf && valup.Getsign() || in.isinf && cp.valup.Getsign()) {
+		out.valup.Setsign(true);
+		out.isinf = true;
+		return out;
+	}
+	else if (isinf && !valup.Getsign() || in.isinf && !cp.valup.Getsign()) {
+		out.valup.Setsign(false);
+		out.isinf = true;
+		return out;
+	}
 	BigInt gcdvaldown(gcd(valdown, in.valdown));
 	out.valup = valup * (cp.valdown / gcdvaldown) + cp.valup * (valdown / gcdvaldown);
 	out.valdown = valdown * (cp.valdown / gcdvaldown);
@@ -123,8 +148,25 @@ BigInt BigDecimal::GetBigIntup() {
 BigInt BigDecimal::GetBigIntdown() {
 	return valdown;
 }
+bool BigDecimal::Getinf() {
+	return isinf;
+}
+bool BigDecimal::Getundefined() {
+	return isundefined;
+}
 
 string BigDecimal::Getvalreal() {
+	if (isundefined) {
+		return "nan";
+	}
+	string result = "";
+	if (isinf) {
+		if (!valup.Getsign()) {
+			result += "-";
+		}
+		result += "inf";
+		return result;
+	}
 	vector<short> upreal, downreal;
 	upreal = valup.Getval();
 	unsigned long long int uprealsize = upreal.size();
@@ -132,7 +174,6 @@ string BigDecimal::Getvalreal() {
 		upreal.push_back(0);
 	}
 	downreal = valdown.Getval();
-	string result = "";
 	bool find = false;
 	for (long long int i = 0; i < uprealsize - downreal.size() + 1 + precision; i++) {
 		bool ok = true;
@@ -183,6 +224,11 @@ string BigDecimal::Getvalreal() {
 	return result;
 }
 
+
+//BigDecimal BigDecimal::Power(BigDecimal in) {
+//	BigInt out = *this;
+//	return BigDecimal(out);
+//}
 
 string BigDecimal::stringprettify(string in) {
 	string sign = "";

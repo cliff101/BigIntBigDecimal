@@ -6,6 +6,8 @@
 #include <vector>
 #include <string>
 #include <windows.h>
+#include <signal.h>
+#include <csetjmp>
 
 using namespace std;
 
@@ -27,7 +29,7 @@ public:
 private:
 	struct BigValue {
 		bool IsInt = true;
-		BigInt BigIntVal;
+		BigInt BigIntVal = 0;
 		BigDecimal BigDecimalVal;
 	};
 	struct retmsg {

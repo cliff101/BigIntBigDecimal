@@ -35,17 +35,24 @@ public:
 	bool operator==(const BigInt&);
 	bool operator!=(const BigInt&);
 	bool operator>(const BigInt&);
+	bool operator>=(const BigInt&);
 	bool operator<(const BigInt&);
+	bool operator<=(const BigInt&);
 
-	BigDecimal pow(BigDecimal);
+	BigDecimal Power(BigDecimal);
 
 	vector<short> Getval();
 	string Getvalreal();
 	long long int Getint();
 	bool Getsign();
 	void Setsign(bool);
+	bool Getinf();
+	bool Getundefined();
+	int Getnumlength();
 private:
 	vector<short> val;
+	bool isinf;
+	bool isundefined;
 
 	bool checkbig(const BigInt&, const BigInt&, bool isunsigned = false);//true = 前  false = 後
 	short compair(const BigInt&, const BigInt&);//1 = 前 0 = 等於 -1 = 後

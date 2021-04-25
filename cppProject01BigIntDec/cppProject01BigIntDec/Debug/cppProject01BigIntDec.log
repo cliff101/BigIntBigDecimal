@@ -1,32 +1,73 @@
-﻿  CommandParser.cpp
-C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\CommandParser.cpp(87,29): warning C4244: '引數': 將 'unsigned __int64' 轉換為 'const int'，由於類型不同，可能導致資料遺失
-C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\CommandParser.cpp(126,30): warning C4244: '引數': 將 'unsigned __int64' 轉換為 'const int'，由於類型不同，可能導致資料遺失
-C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\CommandParser.cpp(196,10): warning C4244: '引數': 將 'unsigned __int64' 轉換為 'const unsigned int'，由於類型不同，可能導致資料遺失
-C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\CommandParser.cpp(196,27): warning C4244: '引數': 將 'unsigned __int64' 轉換為 'const unsigned int'，由於類型不同，可能導致資料遺失
-C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\CommandParser.cpp(196,44): warning C4244: '引數': 將 'unsigned __int64' 轉換為 'const unsigned int'，由於類型不同，可能導致資料遺失
-C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\CommandParser.cpp(196,61): warning C4244: '引數': 將 'unsigned __int64' 轉換為 'const unsigned int'，由於類型不同，可能導致資料遺失
-C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\CommandParser.cpp(196,78): warning C4244: '引數': 將 'unsigned __int64' 轉換為 'const unsigned int'，由於類型不同，可能導致資料遺失
-C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\CommandParser.cpp(196,95): warning C4244: '引數': 將 'unsigned __int64' 轉換為 'const unsigned int'，由於類型不同，可能導致資料遺失
-C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\CommandParser.cpp(196,112): warning C4244: '引數': 將 'unsigned __int64' 轉換為 'const unsigned int'，由於類型不同，可能導致資料遺失
-C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\CommandParser.cpp(196,129): warning C4244: '引數': 將 'unsigned __int64' 轉換為 'const unsigned int'，由於類型不同，可能導致資料遺失
-C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\CommandParser.cpp(205,10): warning C4244: '引數': 將 'unsigned __int64' 轉換為 'const unsigned int'，由於類型不同，可能導致資料遺失
-C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\CommandParser.cpp(208,15): warning C4244: '引數': 將 'unsigned __int64' 轉換為 'const unsigned int'，由於類型不同，可能導致資料遺失
-C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\CommandParser.cpp(211,15): warning C4244: '引數': 將 'unsigned __int64' 轉換為 'const unsigned int'，由於類型不同，可能導致資料遺失
-C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\CommandParser.cpp(214,15): warning C4244: '引數': 將 'unsigned __int64' 轉換為 'const unsigned int'，由於類型不同，可能導致資料遺失
-C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\CommandParser.cpp(217,15): warning C4244: '引數': 將 'unsigned __int64' 轉換為 'const unsigned int'，由於類型不同，可能導致資料遺失
-C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\CommandParser.cpp(217,32): warning C4244: '引數': 將 'unsigned __int64' 轉換為 'const unsigned int'，由於類型不同，可能導致資料遺失
-C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\CommandParser.cpp(220,15): warning C4244: '引數': 將 'unsigned __int64' 轉換為 'const unsigned int'，由於類型不同，可能導致資料遺失
-C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\CommandParser.cpp(220,32): warning C4244: '引數': 將 'unsigned __int64' 轉換為 'const unsigned int'，由於類型不同，可能導致資料遺失
-C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\CommandParser.cpp(224,24): warning C4244: '引數': 將 'unsigned __int64' 轉換為 'const unsigned int'，由於類型不同，可能導致資料遺失
-C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\CommandParser.cpp(230,10): warning C4244: '引數': 將 'unsigned __int64' 轉換為 'const unsigned int'，由於類型不同，可能導致資料遺失
-C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\CommandParser.cpp(238,13): warning C4244: '引數': 將 'unsigned __int64' 轉換為 'const unsigned int'，由於類型不同，可能導致資料遺失
-C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\CommandParser.cpp(238,30): warning C4244: '引數': 將 'unsigned __int64' 轉換為 'const unsigned int'，由於類型不同，可能導致資料遺失
-C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\CommandParser.cpp(239,11): warning C4244: '引數': 將 'unsigned __int64' 轉換為 'const unsigned int'，由於類型不同，可能導致資料遺失
-C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\CommandParser.cpp(239,45): warning C4244: '引數': 將 'unsigned __int64' 轉換為 'const unsigned int'，由於類型不同，可能導致資料遺失
-C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\CommandParser.cpp(251,21): warning C4244: '引數': 將 'unsigned __int64' 轉換為 'const unsigned int'，由於類型不同，可能導致資料遺失
-C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\CommandParser.cpp(252,15): warning C4244: '引數': 將 'unsigned __int64' 轉換為 'const unsigned int'，由於類型不同，可能導致資料遺失
-C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\CommandParser.cpp(255,16): warning C4244: '引數': 將 'unsigned __int64' 轉換為 'const unsigned int'，由於類型不同，可能導致資料遺失
-C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\CommandParser.cpp(264,10): warning C4244: '引數': 將 'unsigned __int64' 轉換為 'const unsigned int'，由於類型不同，可能導致資料遺失
-C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\CommandParser.cpp(338,13): warning C4244: '引數': 將 'unsigned __int64' 轉換為 'const unsigned int'，由於類型不同，可能導致資料遺失
-C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\CommandParser.cpp(350,10): warning C4244: '引數': 將 'unsigned __int64' 轉換為 'const unsigned int'，由於類型不同，可能導致資料遺失
+﻿  BigInt.cpp
+C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\BigInt.cpp(19,7): warning C4244: '引數': 將 'unsigned __int64' 轉換為 'const unsigned int'，由於類型不同，可能導致資料遺失
+C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\BigInt.cpp(19,15): warning C4244: '引數': 將 'unsigned __int64' 轉換為 'const unsigned int'，由於類型不同，可能導致資料遺失
+C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\BigInt.cpp(46,7): warning C4244: '引數': 將 'unsigned __int64' 轉換為 'const unsigned int'，由於類型不同，可能導致資料遺失
+C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\BigInt.cpp(46,15): warning C4244: '引數': 將 'unsigned __int64' 轉換為 'const unsigned int'，由於類型不同，可能導致資料遺失
+C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\BigInt.cpp(74,7): warning C4244: '引數': 將 'unsigned __int64' 轉換為 'const unsigned int'，由於類型不同，可能導致資料遺失
+C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\BigInt.cpp(74,15): warning C4244: '引數': 將 'unsigned __int64' 轉換為 'const unsigned int'，由於類型不同，可能導致資料遺失
+C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\BigInt.cpp(96,7): warning C4244: '引數': 將 'unsigned __int64' 轉換為 'const unsigned int'，由於類型不同，可能導致資料遺失
+C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\BigInt.cpp(96,15): warning C4244: '引數': 將 'unsigned __int64' 轉換為 'const unsigned int'，由於類型不同，可能導致資料遺失
+C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\BigInt.cpp(150,47): warning C4244: '引數': 將 '__int64' 轉換為 'const unsigned int'，由於類型不同，可能導致資料遺失
+C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\BigInt.cpp(150,74): warning C4244: '引數': 將 '__int64' 轉換為 'const unsigned int'，由於類型不同，可能導致資料遺失
+C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\BigInt.cpp(211,53): warning C4244: '引數': 將 '__int64' 轉換為 'const unsigned int'，由於類型不同，可能導致資料遺失
+C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\BigInt.cpp(211,83): warning C4244: '引數': 將 '__int64' 轉換為 'const unsigned int'，由於類型不同，可能導致資料遺失
+C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\BigInt.cpp(253,14): warning C4244: '引數': 將 '__int64' 轉換為 'const unsigned int'，由於類型不同，可能導致資料遺失
+C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\BigInt.cpp(253,26): warning C4244: '引數': 將 '__int64' 轉換為 'const unsigned int'，由於類型不同，可能導致資料遺失
+C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\BigInt.cpp(253,38): warning C4244: '引數': 將 '__int64' 轉換為 'const unsigned int'，由於類型不同，可能導致資料遺失
+C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\BigInt.cpp(254,21): warning C4244: '引數': 將 '__int64' 轉換為 'const unsigned int'，由於類型不同，可能導致資料遺失
+C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\BigInt.cpp(255,14): warning C4244: '引數': 將 '__int64' 轉換為 'const unsigned int'，由於類型不同，可能導致資料遺失
+C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\BigInt.cpp(257,13): warning C4244: '引數': 將 '__int64' 轉換為 'const unsigned int'，由於類型不同，可能導致資料遺失
+C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\BigInt.cpp(298,22): warning C4018: '<': signed/unsigned 不相符
+C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\BigInt.cpp(299,17): warning C4244: '引數': 將 '__int64' 轉換為 'const unsigned int'，由於類型不同，可能導致資料遺失
+C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\BigInt.cpp(302,22): warning C4244: '引數': 將 '__int64' 轉換為 'const unsigned int'，由於類型不同，可能導致資料遺失
+C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\BigInt.cpp(309,22): warning C4018: '<': signed/unsigned 不相符
+C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\BigInt.cpp(310,13): warning C4244: '引數': 將 '__int64' 轉換為 'const unsigned int'，由於類型不同，可能導致資料遺失
+C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\BigInt.cpp(311,17): warning C4244: '引數': 將 '__int64' 轉換為 'const unsigned int'，由於類型不同，可能導致資料遺失
+C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\BigInt.cpp(312,14): warning C4244: '引數': 將 '__int64' 轉換為 'const unsigned int'，由於類型不同，可能導致資料遺失
+C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\BigInt.cpp(313,18): warning C4244: '引數': 將 '__int64' 轉換為 'const unsigned int'，由於類型不同，可能導致資料遺失
+C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\BigInt.cpp(319,12): warning C4244: '引數': 將 '__int64' 轉換為 'const unsigned int'，由於類型不同，可能導致資料遺失
+C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\BigInt.cpp(319,27): warning C4244: '引數': 將 '__int64' 轉換為 'const unsigned int'，由於類型不同，可能導致資料遺失
+C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\BigInt.cpp(319,40): warning C4244: '引數': 將 '__int64' 轉換為 'const unsigned int'，由於類型不同，可能導致資料遺失
+C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\BigInt.cpp(320,10): warning C4244: '引數': 將 '__int64' 轉換為 'const unsigned int'，由於類型不同，可能導致資料遺失
+C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\BigInt.cpp(368,47): warning C4244: '引數': 將 '__int64' 轉換為 'const unsigned int'，由於類型不同，可能導致資料遺失
+C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\BigInt.cpp(368,74): warning C4244: '引數': 將 '__int64' 轉換為 'const unsigned int'，由於類型不同，可能導致資料遺失
+C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\BigInt.cpp(427,53): warning C4244: '引數': 將 '__int64' 轉換為 'const unsigned int'，由於類型不同，可能導致資料遺失
+C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\BigInt.cpp(427,83): warning C4244: '引數': 將 '__int64' 轉換為 'const unsigned int'，由於類型不同，可能導致資料遺失
+C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\BigInt.cpp(468,14): warning C4244: '引數': 將 '__int64' 轉換為 'const unsigned int'，由於類型不同，可能導致資料遺失
+C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\BigInt.cpp(468,26): warning C4244: '引數': 將 '__int64' 轉換為 'const unsigned int'，由於類型不同，可能導致資料遺失
+C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\BigInt.cpp(468,38): warning C4244: '引數': 將 '__int64' 轉換為 'const unsigned int'，由於類型不同，可能導致資料遺失
+C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\BigInt.cpp(469,21): warning C4244: '引數': 將 '__int64' 轉換為 'const unsigned int'，由於類型不同，可能導致資料遺失
+C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\BigInt.cpp(470,14): warning C4244: '引數': 將 '__int64' 轉換為 'const unsigned int'，由於類型不同，可能導致資料遺失
+C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\BigInt.cpp(472,13): warning C4244: '引數': 將 '__int64' 轉換為 'const unsigned int'，由於類型不同，可能導致資料遺失
+C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\BigInt.cpp(513,22): warning C4018: '<': signed/unsigned 不相符
+C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\BigInt.cpp(514,17): warning C4244: '引數': 將 '__int64' 轉換為 'const unsigned int'，由於類型不同，可能導致資料遺失
+C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\BigInt.cpp(517,22): warning C4244: '引數': 將 '__int64' 轉換為 'const unsigned int'，由於類型不同，可能導致資料遺失
+C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\BigInt.cpp(524,22): warning C4018: '<': signed/unsigned 不相符
+C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\BigInt.cpp(525,13): warning C4244: '引數': 將 '__int64' 轉換為 'const unsigned int'，由於類型不同，可能導致資料遺失
+C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\BigInt.cpp(526,17): warning C4244: '引數': 將 '__int64' 轉換為 'const unsigned int'，由於類型不同，可能導致資料遺失
+C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\BigInt.cpp(527,14): warning C4244: '引數': 將 '__int64' 轉換為 'const unsigned int'，由於類型不同，可能導致資料遺失
+C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\BigInt.cpp(528,18): warning C4244: '引數': 將 '__int64' 轉換為 'const unsigned int'，由於類型不同，可能導致資料遺失
+C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\BigInt.cpp(534,12): warning C4244: '引數': 將 '__int64' 轉換為 'const unsigned int'，由於類型不同，可能導致資料遺失
+C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\BigInt.cpp(534,27): warning C4244: '引數': 將 '__int64' 轉換為 'const unsigned int'，由於類型不同，可能導致資料遺失
+C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\BigInt.cpp(534,40): warning C4244: '引數': 將 '__int64' 轉換為 'const unsigned int'，由於類型不同，可能導致資料遺失
+C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\BigInt.cpp(535,10): warning C4244: '引數': 將 '__int64' 轉換為 'const unsigned int'，由於類型不同，可能導致資料遺失
+C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\BigInt.cpp(639,12): warning C4244: '引數': 將 '__int64' 轉換為 'const unsigned int'，由於類型不同，可能導致資料遺失
+C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\BigInt.cpp(639,27): warning C4244: '引數': 將 '__int64' 轉換為 'const unsigned int'，由於類型不同，可能導致資料遺失
+C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\BigInt.cpp(639,47): warning C4244: '引數': 將 '__int64' 轉換為 'const unsigned int'，由於類型不同，可能導致資料遺失
+C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\BigInt.cpp(642,23): warning C4244: '引數': 將 '__int64' 轉換為 'const unsigned int'，由於類型不同，可能導致資料遺失
+C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\BigInt.cpp(645,19): warning C4244: '引數': 將 '__int64' 轉換為 'int'，由於類型不同，可能導致資料遺失
+C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\BigInt.cpp(649,31): warning C4244: '引數': 將 'unsigned __int64' 轉換為 'const unsigned int'，由於類型不同，可能導致資料遺失
+C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\BigInt.cpp(665,22): warning C4018: '<': signed/unsigned 不相符
+C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\BigInt.cpp(705,14): warning C4244: '引數': 將 'unsigned __int64' 轉換為 'const unsigned int'，由於類型不同，可能導致資料遺失
+C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\BigInt.cpp(705,25): warning C4244: '引數': 將 'unsigned __int64' 轉換為 'const unsigned int'，由於類型不同，可能導致資料遺失
+C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\BigInt.cpp(709,19): warning C4244: '引數': 將 'unsigned __int64' 轉換為 'const unsigned int'，由於類型不同，可能導致資料遺失
+C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\BigInt.cpp(709,30): warning C4244: '引數': 將 'unsigned __int64' 轉換為 'const unsigned int'，由於類型不同，可能導致資料遺失
+C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\BigInt.cpp(739,14): warning C4244: '引數': 將 'unsigned __int64' 轉換為 'const unsigned int'，由於類型不同，可能導致資料遺失
+C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\BigInt.cpp(739,25): warning C4244: '引數': 將 'unsigned __int64' 轉換為 'const unsigned int'，由於類型不同，可能導致資料遺失
+C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\BigInt.cpp(743,19): warning C4244: '引數': 將 'unsigned __int64' 轉換為 'const unsigned int'，由於類型不同，可能導致資料遺失
+C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\BigInt.cpp(743,30): warning C4244: '引數': 將 'unsigned __int64' 轉換為 'const unsigned int'，由於類型不同，可能導致資料遺失
+C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\BigInt.cpp(773,10): warning C4244: '引數': 將 'unsigned __int64' 轉換為 'const unsigned int'，由於類型不同，可能導致資料遺失
+C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\BigInt.cpp(774,22): warning C4244: '引數': 將 'unsigned __int64' 轉換為 'const unsigned int'，由於類型不同，可能導致資料遺失
+C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\BigInt.cpp(801,17): warning C4244: '引數': 將 'unsigned __int64' 轉換為 'const unsigned int'，由於類型不同，可能導致資料遺失
+C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\cppProject01BigIntDec\BigInt.cpp(809,14): warning C4244: '引數': 將 'unsigned __int64' 轉換為 'const unsigned int'，由於類型不同，可能導致資料遺失
   cppProject01BigIntDec.vcxproj -> C:\Users\cliffsu\Documents\CPPlang\PROJECT\cppProject01BigIntDec\Debug\cppProject01BigIntDec.exe

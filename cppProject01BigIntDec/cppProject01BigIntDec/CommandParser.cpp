@@ -1,8 +1,16 @@
 #include "CommandParser.h"
 
+#define BIAS_BLANK string("    ")
+
+bool keeprun = true;
+
 void setConsoleColor(WORD c)
 {
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), c);
+}
+
+void signal_callback_handler(int signum) {
+	keeprun = false;
 }
 
 CommandParser::CommandParser() {
@@ -10,9 +18,17 @@ CommandParser::CommandParser() {
 	BigDecimalVar = map<string, BigDecimal>();
 }
 void CommandParser::Inputcommand(string in) {
+	signal(SIGINT, signal_callback_handler);
+
 	unsigned long long i = 0;
+	keeprun = true;
 	retmsg msg = ProceedCommand(in, i, 8);
-	if (!msg.ok) {
+	if (!keeprun) {
+		setConsoleColor(6);
+		cout << "SIGNAL CAUGHT." << endl;
+		setConsoleColor(7);
+	}
+	else if (!msg.ok) {
 		setConsoleColor(FOREGROUND_RED);
 		cout << msg.errmsg << endl;
 		setConsoleColor(7);
@@ -26,6 +42,7 @@ void CommandParser::Inputcommand(string in) {
 		}
 
 	}
+
 }
 
 /*
@@ -38,12 +55,12 @@ void CommandParser::Inputcommand(string in) {
 8 (empty)
 */
 CommandParser::retmsg CommandParser::ProceedCommand(string& cmd, unsigned long long& i, int prevpriority, bool isgiveval1, BigValue giveval1) {
-	string operatorval = "";
-	BigValue value1, value2;
-	retmsg msg;
-	int thispriority = 0;
 
-	while (true) {
+	while (keeprun) {
+		string operatorval = "";
+		BigValue value1, value2;
+		retmsg msg;
+		int thispriority = 0;
 		if (!isgiveval1) {
 			msg = getvalue(cmd, i);
 			if (!msg.ok) {
@@ -72,45 +89,7 @@ CommandParser::retmsg CommandParser::ProceedCommand(string& cmd, unsigned long l
 			value1 = giveval1;
 		}
 
-		msg = getoperator(cmd, i);
-		if (!msg.ok) {
-			return msg;
-		}
-		else if (msg.description == "endofcmd") {
-			msg.ok = true;
-			msg.value = value1;
-			msg.errmsg = "";
-			msg.priority = 8;
-			return msg;
-		}
-		else if (msg.description == "(") {
-			cmd.insert(cmd.begin() + i, '*');
-			operatorval = "*";
-			thispriority = 5;
-		}
-		else if (msg.description == ")") {
-			msg.ok = true;
-			msg.errmsg = "";
-			msg.priority = 7;
-			msg.value = value1;
-			i++;
-			return msg;//return時，i停留在operator上
-		}
-		else if (msg.description == "!") {
-			msg = stagecalc(value1);
-			if (!msg.ok) {
-				string temp = msg.errmsg;
-				msg.errmsg = "";
-				for (unsigned long long int j = 0; j < i; j++) {
-					msg.errmsg += " ";
-				}
-				msg.errmsg += "    ^~~" + temp;
-				return msg;
-			}
-			else {
-				value1 = msg.value;
-			}
-			i++;
+		while (keeprun) {
 			msg = getoperator(cmd, i);
 			if (!msg.ok) {
 				return msg;
@@ -123,7 +102,6 @@ CommandParser::retmsg CommandParser::ProceedCommand(string& cmd, unsigned long l
 				return msg;
 			}
 			else if (msg.description == "(") {
-				cmd.insert(cmd.begin() + i, '*');
 				operatorval = "*";
 				thispriority = 5;
 			}
@@ -136,22 +114,26 @@ CommandParser::retmsg CommandParser::ProceedCommand(string& cmd, unsigned long l
 				return msg;//return時，i停留在operator上
 			}
 			else if (msg.description == "!") {
-				msg.ok = false;
-				msg.errmsg = "";
-				for (unsigned long long int j = 0; j < i; j++) {
-					msg.errmsg += " ";
+				msg = stagecalc(value1);
+				if (!msg.ok) {
+					msg.errmsg = "";
+					for (unsigned long long int j = 0; j < i; j++) {
+						msg.errmsg += " ";
+					}
+					msg.errmsg += BIAS_BLANK + "^~~  " + msg.description;
+					return msg;
 				}
-				msg.errmsg += "    ^~~  不支援連續階層";
-				return msg;
+				else {
+					value1 = msg.value;
+				}
+				i++;
+				continue;
 			}
 			else {
 				operatorval = msg.description;
 				thispriority = msg.priority;
 			}
-		}
-		else {
-			operatorval = msg.description;
-			thispriority = msg.priority;
+			break;
 		}
 
 		if (thispriority > prevpriority || thispriority == prevpriority && operatorval != "^") {
@@ -171,17 +153,19 @@ CommandParser::retmsg CommandParser::ProceedCommand(string& cmd, unsigned long l
 			retmsg msg2;
 			msg2 = calculate(value1, operatorval, value2);//return時，i停留在operator上
 			if (!msg2.ok) {
+				msg2.errmsg = "";
+				for (unsigned long long int j = 0; j < i; j++) {
+					msg2.errmsg += " ";
+				}
+				msg2.errmsg += BIAS_BLANK + "^~~  " + msg2.description;
 				return msg2;
 			}
-			value1 = msg2.value;
-			if (msg.description == "endofcmd") {
+			else if (msg.description == "endofcmd" || cmd[i - 1] == ')') {
 				return msg2;
 			}
 			isgiveval1 = true;
-			giveval1 = value1;
+			giveval1 = msg2.value;
 			prevpriority = 8;
-			thispriority = 0;
-			operatorval = "";
 		}
 	}
 }
@@ -199,7 +183,7 @@ CommandParser::retmsg CommandParser::getoperator(string& cmd, unsigned long long
 		for (unsigned long long int j = 0; j < i; j++) {
 			msg.errmsg += " ";
 		}
-		msg.errmsg += "    ^~~  無法辨識運算符";
+		msg.errmsg += BIAS_BLANK + "^~~  無法辨識運算符";
 		return msg;
 	}
 	if (cmd[i] == '(') {
@@ -270,7 +254,7 @@ CommandParser::retmsg CommandParser::getvalue(string& cmd, unsigned long long& i
 		for (unsigned long long int j = 0; j < i; j++) {
 			msg.errmsg += " ";
 		}
-		msg.errmsg += "    ^~~  須為數值";
+		msg.errmsg += BIAS_BLANK + "^~~  須為數值";
 		return msg;
 	}
 
@@ -310,23 +294,50 @@ CommandParser::retmsg CommandParser::calculate(BigValue& val1, string& operatorv
 			msg.value.BigIntVal = val1.BigIntVal / val2.BigIntVal;
 		}
 		else if (operatorval == "^") {
-			msg.value.BigIntVal = val1.BigIntVal.pow(val2.BigIntVal);
+			msg.value.BigIntVal = val1.BigIntVal.Power(val2.BigIntVal);
 		}
 
 	}
+	else {
+		/*
+		msg.ok = true;
+		if (operatorval == "+") {
+			msg.value.BigDecimalVal = (val1.IsInt ? BigDecimal(val1.BigIntVal) : val1.BigDecimalVal) + (val2.IsInt ? BigDecimal(val2.BigIntVal) : val2.BigDecimalVal);
+		}
+		else if (operatorval == "-") {
+			msg.value.BigDecimalVal = (val1.IsInt ? BigDecimal(val1.BigIntVal) : val1.BigDecimalVal) - (val2.IsInt ? BigDecimal(val2.BigIntVal) : val2.BigDecimalVal);
+		}
+		else if (operatorval == "*") {
+			msg.value.BigDecimalVal = (val1.IsInt ? BigDecimal(val1.BigIntVal) : val1.BigDecimalVal) * (val2.IsInt ? BigDecimal(val2.BigIntVal) : val2.BigDecimalVal);
+		}
+		else if (operatorval == "/") {
+			msg.value.BigDecimalVal = (val1.IsInt ? BigDecimal(val1.BigIntVal) : val1.BigDecimalVal) / (val2.IsInt ? BigDecimal(val2.BigIntVal) : val2.BigDecimalVal);
+		}
+		else if (operatorval == "^") {
+			BigDecimal temp(val2.IsInt ? BigDecimal(val2.BigIntVal) : val2.BigDecimalVal);
+			if (temp.GetBigIntdown() > 2) {
+				msg.ok = false;
+				msg.description = "不支援非0.5倍數的次方";
+				return msg;
+			}
+			msg.value.BigDecimalVal = (val1.IsInt ? BigDecimal(val1.BigIntVal) : val1.BigDecimalVal).Power(temp);
+		}
+		*/
+	}
+
 	return msg;
 }
 CommandParser::retmsg CommandParser::stagecalc(BigValue& val1) {
 	retmsg msg;
 	if (!val1.IsInt) {
 		msg.ok = false;
-		msg.description = "  不支援浮點數階層運算";
+		msg.description = "不支援浮點數階層運算";
 		return msg;
 	}
 	if (val1.BigIntVal < 1) {
 		val1.BigIntVal = 1;
 	}
-	for (BigInt i = val1.BigIntVal - 1; i > 1; i -= 1) {
+	for (BigInt i = val1.BigIntVal - 1; i > 1 && keeprun; i -= 1) {
 		val1.BigIntVal *= i;
 	}
 	msg.ok = true;
@@ -335,7 +346,7 @@ CommandParser::retmsg CommandParser::stagecalc(BigValue& val1) {
 }
 
 void CommandParser::blandslide(string& cmd, unsigned long long& i) {
-	while (cmd[i] == ' ') {
+	while (i < cmd.length() && cmd[i] == ' ') {
 		i++;
 	}
 }

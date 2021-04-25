@@ -29,11 +29,17 @@ public:
 	BigInt GetBigIntup();
 	BigInt GetBigIntdown();
 	string Getvalreal();
+	bool Getinf();
+	bool Getundefined();
+
+	BigDecimal Power(BigDecimal);
 
 	static unsigned int precision;
 
 private:
 	BigInt valup, valdown;
+	bool isinf;
+	bool isundefined;
 
 	bool checkbig(const BigDecimal&, const BigDecimal&, bool isunsigned = false);//true = лe  false = лс
 	void erasezero(BigDecimal&);

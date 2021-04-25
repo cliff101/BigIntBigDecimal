@@ -4,6 +4,8 @@
 BigInt::BigInt() {
 	val = vector<short>(1, 0);
 	sign = true;
+	isinf = false;
+	isundefined = false;
 }
 BigInt::BigInt(string in) {
 	in = stringprettify(in);
@@ -23,10 +25,14 @@ BigInt::BigInt(string in) {
 		sign = true;
 	}
 	erasezero(*this);
+	isinf = false;
+	isundefined = false;
 }
 BigInt::BigInt(const BigInt& in) {
 	val = vector<short>(in.val);
 	sign = in.sign;
+	isinf = in.isinf;
+	isundefined = in.isundefined;
 }
 BigInt::BigInt(int ini) {
 	string in = stringprettify(to_string(ini));
@@ -46,10 +52,14 @@ BigInt::BigInt(int ini) {
 		sign = true;
 	}
 	erasezero(*this);
+	isinf = false;
+	isundefined = false;
 }
 BigInt::BigInt(const BigDecimal& in) {
 	BigDecimal cp(in);
 	*this = (cp.GetBigIntup() / cp.GetBigIntdown());
+	isinf = cp.Getinf();
+	isundefined = cp.Getundefined();
 }
 
 BigInt BigInt::operator=(string in) {
@@ -70,6 +80,8 @@ BigInt BigInt::operator=(string in) {
 		sign = true;
 	}
 	erasezero(*this);
+	isinf = false;
+	isundefined = false;
 	return *this;
 }
 BigInt BigInt::operator=(int ini) {
@@ -90,16 +102,34 @@ BigInt BigInt::operator=(int ini) {
 		sign = true;
 	}
 	erasezero(*this);
+	isinf = false;
+	isundefined = false;
 	return *this;
 }
 BigInt BigInt::operator=(const BigDecimal& in) {
 	BigDecimal cp(in);
 	*this = (cp.GetBigIntup() / cp.GetBigIntdown());
+	isinf = cp.Getinf();
+	isundefined = cp.Getundefined();
 	return *this;
 }
 
 BigInt BigInt::operator+(const BigInt& in) {
 	BigInt out;
+	if (isundefined || in.isundefined || isinf && in.isinf && (!sign && in.sign || sign && !in.sign)) {
+		out.isundefined = true;
+		return out;
+	}
+	else if (isinf && sign || in.isinf && in.sign) {
+		out.sign = true;
+		out.isinf = true;
+		return out;
+	}
+	else if (isinf && !sign || in.isinf && !in.sign) {
+		out.sign = false;
+		out.isinf = true;
+		return out;
+	}
 	vector<short> result(0);
 	if (!sign && in.sign) {
 		BigInt temp(*this);
@@ -139,6 +169,20 @@ BigInt BigInt::operator+(const BigInt& in) {
 }
 BigInt BigInt::operator-(const BigInt& in) {
 	BigInt out;
+	if (isundefined || in.isundefined || isinf && in.isinf && (sign && in.sign || !sign && !in.sign)) {
+		out.isundefined = true;
+		return out;
+	}
+	else if (isinf && sign || in.isinf && !in.sign) {
+		out.sign = true;
+		out.isinf = true;
+		return out;
+	}
+	else if (isinf && !sign || in.isinf && in.sign) {
+		out.sign = false;
+		out.isinf = true;
+		return out;
+	}
 	vector<short> result(0);
 	if (!sign && in.sign) {
 		BigInt temp(*this);
@@ -187,6 +231,20 @@ BigInt BigInt::operator-(const BigInt& in) {
 }
 BigInt BigInt::operator*(const BigInt& in) {
 	BigInt out;
+	if (isundefined || in.isundefined) {
+		out.isundefined = true;
+		return out;
+	}
+	else if ((isinf || in.isinf) && in.sign && sign) {
+		out.sign = true;
+		out.isinf = true;
+		return out;
+	}
+	else if (isinf || in.isinf) {
+		out.sign = false;
+		out.isinf = true;
+		return out;
+	}
 	vector<short> res(val.size() + in.val.size());
 	int hold = 0;
 	for (long long int i = static_cast<unsigned long long>(val.size()) - 1; i >= 0; i--) {
@@ -209,6 +267,28 @@ BigInt BigInt::operator*(const BigInt& in) {
 }
 BigInt BigInt::operator/(const BigInt& in) {
 	BigInt a, out;
+	if (isundefined || in.isundefined || isinf && in.isinf || !in.isinf && !isinf && in.val.size() == 1 && BigInt(in) == 0 && val.size() == 1 && *this == 0) {
+		out.isundefined = true;
+		return out;
+	}
+	else if (val.size() == 1 && *this == 0) {
+		out = 0;
+		return out;
+	}
+	else if (isinf && in.sign && sign || sign && in.val.size() == 1 && BigInt(in) == 0) {
+		out.sign = true;
+		out.isinf = true;
+		return out;
+	}
+	else if (isinf || !sign && in.val.size() == 1 && BigInt(in) == 0) {
+		out.sign = false;
+		out.isinf = true;
+		return out;
+	}
+	else if (in.isinf) {
+		out = 0;
+		return out;
+	}
 	a = *this;
 	vector<short> result(0);
 	for (long long int i = 0; i < static_cast<long long>(a.val.size()) - in.val.size() + 1; i++) {
@@ -253,26 +333,21 @@ BigInt BigInt::operator%(const BigInt& in) {
 	return *this - (BigInt(in) * (*this / in));
 }
 
-bool BigInt::operator==(const BigInt& in) {
-	if (val != in.val) {
-		return false;
-	}
-	if (sign != sign) {
-		return false;
-	}
-	return true;
-}
-bool BigInt::operator!=(const BigInt& in) {
-	return !(*this == in);
-}
-bool BigInt::operator>(const BigInt& in) {
-	return compair(*this, in) == 1;
-}
-bool BigInt::operator<(const BigInt& in) {
-	return compair(*this, in) == -1;
-}
-
 BigInt BigInt::operator+=(const BigInt& in) {
+	if (isundefined || in.isundefined || isinf && in.isinf && (!sign && in.sign || sign && !in.sign)) {
+		isundefined = true;
+		return *this;
+	}
+	else if (isinf && sign || in.isinf && in.sign) {
+		sign = true;
+		isinf = true;
+		return *this;
+	}
+	else if (isinf && !sign || in.isinf && !in.sign) {
+		sign = false;
+		isinf = true;
+		return  *this;
+	}
 	vector<short> result(0);
 	if (!sign && in.sign) {
 		BigInt temp(*this);
@@ -311,6 +386,20 @@ BigInt BigInt::operator+=(const BigInt& in) {
 	return *this;
 }
 BigInt BigInt::operator-=(const BigInt& in) {
+	if (isundefined || in.isundefined || isinf && in.isinf && (sign && in.sign || !sign && !in.sign)) {
+		isundefined = true;
+		return *this;
+	}
+	else if (isinf && sign || in.isinf && !in.sign) {
+		sign = true;
+		isinf = true;
+		return *this;
+	}
+	else if (isinf && !sign || in.isinf && in.sign) {
+		sign = false;
+		isinf = true;
+		return *this;
+	}
 	vector<short> result(0);
 	if (!sign && in.sign) {
 		BigInt temp(*this);
@@ -357,6 +446,20 @@ BigInt BigInt::operator-=(const BigInt& in) {
 	return *this;
 }
 BigInt BigInt::operator*=(const BigInt& in) {
+	if (isundefined || in.isundefined) {
+		isundefined = true;
+		return *this;
+	}
+	else if ((isinf || in.isinf) && in.sign && sign) {
+		sign = true;
+		isinf = true;
+		return *this;
+	}
+	else if (isinf || in.isinf) {
+		sign = false;
+		isinf = true;
+		return *this;
+	}
 	vector<short> res(val.size() + in.val.size());
 	int hold = 0;
 	for (long long int i = static_cast<unsigned long long>(val.size()) - 1; i >= 0; i--) {
@@ -378,6 +481,28 @@ BigInt BigInt::operator*=(const BigInt& in) {
 	return *this;
 }
 BigInt BigInt::operator/=(const BigInt& in) {
+	if (isundefined || in.isundefined || isinf && in.isinf || !in.isinf && !isinf && in.val.size() == 1 && BigInt(in) == 0 && val.size() == 1 && *this == 0) {
+		isundefined = true;
+		return *this;
+	}
+	else if (val.size() == 1 && *this == 0) {
+		*this = 0;
+		return *this;
+	}
+	else if (isinf && in.sign && sign || sign && in.val.size() == 1 && BigInt(in) == 0) {
+		sign = true;
+		isinf = true;
+		return *this;
+	}
+	else if (isinf || !sign && in.val.size() == 1 && BigInt(in) == 0) {
+		sign = false;
+		isinf = true;
+		return *this;
+	}
+	else if (in.isinf) {
+		*this = 0;
+		return *this;
+	}
 	BigInt a;
 	a = *this;
 	vector<short> result(0);
@@ -424,13 +549,72 @@ BigInt BigInt::operator%=(const BigInt& in) {
 	return *this;
 }
 
+bool BigInt::operator==(const BigInt& in) {
+	if (isundefined || in.isundefined) {
+		return false;
+	}
+	else if (isinf && in.isinf) {
+		return sign == in.sign;
+	}
+	if (val != in.val) {
+		return false;
+	}
+	if (sign != sign) {
+		return false;
+	}
+	return true;
+}
+bool BigInt::operator!=(const BigInt& in) {
+	if (isundefined || in.isundefined) {
+		return false;
+	}
+	return !(*this == in);
+}
+bool BigInt::operator>(const BigInt& in) {
+	if (isundefined || in.isundefined) {
+		return false;
+	}
+	else if (isinf && in.isinf) {
+		return sign > in.sign;
+	}
+	return compair(*this, in) == 1;
+}
+bool BigInt::operator<(const BigInt& in) {
+	if (isundefined || in.isundefined) {
+		return false;
+	}
+
+	else if (isinf && in.isinf) {
+		return sign < in.sign;
+	}
+	return compair(*this, in) == -1;
+}
+bool BigInt::operator<=(const BigInt& in) {
+	if (isundefined || in.isundefined) {
+		return false;
+	}
+	else if (isinf && in.isinf) {
+		return sign <= in.sign;
+	}
+	return compair(*this, in) <= 0;
+}
+bool BigInt::operator>=(const BigInt& in) {
+	if (isundefined || in.isundefined) {
+		return false;
+	}
+	else if (isinf && in.isinf) {
+		return sign >= in.sign;
+	}
+	return compair(*this, in) >= 0;
+}
+
 BigInt BigInt::operator++(int) {
 	BigInt temp(*this);
 	*this += 1;
 	return temp;
 }
 
-BigDecimal BigInt::pow(BigDecimal in) {
+BigDecimal BigInt::Power(BigDecimal in) {
 	BigInt out = *this;
 	BigInt up = in.GetBigIntup();
 	BigInt down = in.GetBigIntdown();
@@ -602,9 +786,16 @@ vector<short> BigInt::Getval() {
 	return val;
 }
 string BigInt::Getvalreal() {
+	if (isundefined) {
+		return "nan";
+	}
 	string result = "";
 	if (!sign) {
 		result += '-';
+	}
+	if (isinf) {
+		result += "inf";
+		return result;
 	}
 	for (unsigned long long int i = 0; i < val.size(); i++) {
 		result += val[i] + '0';
@@ -627,4 +818,13 @@ bool BigInt::Getsign() {
 }
 void BigInt::Setsign(bool in) {
 	sign = in;
+}
+bool BigInt::Getinf() {
+	return isinf;
+}
+bool BigInt::Getundefined() {
+	return isundefined;
+}
+int BigInt::Getnumlength() {
+	return val.size();
 }
