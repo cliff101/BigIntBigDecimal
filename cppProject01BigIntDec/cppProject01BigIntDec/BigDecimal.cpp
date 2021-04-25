@@ -1,4 +1,5 @@
 #include "BigDecimal.h"
+#include "CommandParser.h"
 
 unsigned int BigDecimal::precision = 100;
 
@@ -29,24 +30,30 @@ BigDecimal::BigDecimal(double ind) {
 	isundefined = false;
 }
 BigDecimal::BigDecimal(string in) {
-	in = stringprettify(in);
-	string down = "1";
-	bool find = false;
-	for (unsigned long long int i = 1; i < in.size(); i++) {
-		if (find) {
-			down += "0";
-		}
-		else if (in[i] == '.') {
-			in.erase(in.begin() + i);
-			find = true;
-			i--;
-		}
+	CommandParser temp;
+	if (temp.IsCommand(in)) {
+		*this = temp.Getcommandvalue(in,*this);
 	}
-	valup = BigInt(in);
-	valdown = BigInt(down);
-	decreduce();
-	isinf = false;
-	isundefined = false;
+	else {
+		in = stringprettify(in);
+		string down = "1";
+		bool find = false;
+		for (unsigned long long int i = 1; i < in.size(); i++) {
+			if (find) {
+				down += "0";
+			}
+			else if (in[i] == '.') {
+				in.erase(in.begin() + i);
+				find = true;
+				i--;
+			}
+		}
+		valup = BigInt(in);
+		valdown = BigInt(down);
+		decreduce();
+		isinf = false;
+		isundefined = false;
+	}
 }
 BigDecimal::BigDecimal(const BigDecimal& in) {
 	valup = BigInt(in.valup);
@@ -89,22 +96,28 @@ BigDecimal BigDecimal::operator=(double ind) {
 	return *this;
 }
 BigDecimal BigDecimal::operator=(string in) {
-	in = stringprettify(in);
-	string down = "1";
-	bool find = false;
-	for (unsigned long long int i = 1; i < in.size(); i++) {
-		if (find) {
-			down += "0";
-		}
-		else if (in[i] == '.') {
-			in.erase(in.begin() + i);
-			find = true;
-			i--;
-		}
+	CommandParser temp;
+	if (temp.IsCommand(in)) {
+		*this = temp.Getcommandvalue(in, *this);
 	}
-	valup = BigInt(in);
-	valdown = BigInt(down);
-	decreduce();
+	else {
+		in = stringprettify(in);
+		string down = "1";
+		bool find = false;
+		for (unsigned long long int i = 1; i < in.size(); i++) {
+			if (find) {
+				down += "0";
+			}
+			else if (in[i] == '.') {
+				in.erase(in.begin() + i);
+				find = true;
+				i--;
+			}
+		}
+		valup = BigInt(in);
+		valdown = BigInt(down);
+		decreduce();
+	}
 	return *this;
 }
 BigDecimal BigDecimal::operator=(const BigInt& in) {
@@ -135,6 +148,16 @@ BigDecimal BigDecimal::operator+(const BigDecimal& in) {
 	out.decreduce();
 	return out;
 }
+BigDecimal operator+(BigInt& in1, BigDecimal& in2) {
+	return BigDecimal(in1) + in2;
+}
+BigDecimal operator+(const BigInt& in1, const  BigDecimal& in2) {
+	return BigDecimal(in1) + in2;
+}
+BigDecimal operator+(BigInt& in1, const  BigDecimal& in2) {
+	return BigDecimal(in1) + in2;
+}
+
 
 vector<short> BigDecimal::Getvalup() {
 	return valup.Getval();
@@ -225,7 +248,7 @@ string BigDecimal::Getvalreal() {
 }
 
 
-//BigDecimal BigDecimal::Power(BigDecimal in) {
+//BigDecimal BigDecimal::Power(BigDecimal& in) {
 //	BigInt out = *this;
 //	return BigDecimal(out);
 //}

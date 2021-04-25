@@ -2,11 +2,13 @@
 #include <vector>
 #include <string>
 #include <cmath>
+#include "BigValue.h"
 
 using namespace std;
 
 class BigDecimal;
-class BigInt {
+class CommandParser;
+class BigInt :public BigValue {
 public:
 	BigInt();
 	BigInt(int);
@@ -18,11 +20,12 @@ public:
 	BigInt operator=(int);
 	BigInt operator=(const BigDecimal&);
 
-	BigInt operator+(const BigInt&);
-	BigInt operator-(const BigInt&);
-	BigInt operator*(const BigInt&);
-	BigInt operator/(const BigInt&);
-	BigInt operator%(const BigInt&);
+
+	BigInt operator+(const BigInt&) const;
+	BigInt operator-(const BigInt&) const;
+	BigInt operator*(const BigInt&) const;
+	BigInt operator/(const BigInt&) const;
+	BigInt operator%(const BigInt&) const;
 
 	BigInt operator+=(const BigInt&);
 	BigInt operator-=(const BigInt&);
@@ -32,14 +35,15 @@ public:
 
 	BigInt operator++(int);
 
-	bool operator==(const BigInt&);
-	bool operator!=(const BigInt&);
-	bool operator>(const BigInt&);
-	bool operator>=(const BigInt&);
-	bool operator<(const BigInt&);
-	bool operator<=(const BigInt&);
+	bool operator==(const BigInt&)const;
+	bool operator!=(const BigInt&)const;
+	bool operator>(const BigInt&)const;
+	bool operator>=(const BigInt&)const;
+	bool operator<(const BigInt&)const;
+	bool operator<=(const BigInt&)const;
 
-	BigDecimal Power(BigDecimal);
+	BigDecimal Power(BigDecimal&);
+	BigInt Power(BigInt&);
 
 	vector<short> Getval();
 	string Getvalreal();
@@ -54,9 +58,9 @@ private:
 	bool isinf;
 	bool isundefined;
 
-	bool checkbig(const BigInt&, const BigInt&, bool isunsigned = false);//true = 前  false = 後
-	short compair(const BigInt&, const BigInt&);//1 = 前 0 = 等於 -1 = 後
-	void erasezero(BigInt&);
+	bool checkbig(const BigInt&, const BigInt&, bool isunsigned = false) const;//true = 前  false = 後
+	short compair(const BigInt&, const BigInt&) const;//1 = 前 0 = 等於 -1 = 後
+	void erasezero(BigInt&) const;
 	string stringprettify(string);
 	bool sign;//0 = 負號  1 = 正號
 };

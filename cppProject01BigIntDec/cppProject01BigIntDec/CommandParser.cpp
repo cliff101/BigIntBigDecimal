@@ -30,14 +30,14 @@ void CommandParser::Inputcommand(string in) {
 
 	unsigned long long i = 0;
 	keeprun = true;
-	retmsg setmode = checkset(in,i);
+	retmsg setmode = checkset(in, i);
 	if (setmode.mode == 0) {
 		i = 0;
 	}
 	else if (setmode.mode == 3) {
 		if (BigValueVar.find(setmode.varname) == BigValueVar.end()) {
 			setConsoleColor(FOREGROUND_RED);
-			cout << createerrmsg(i-1,"嘗試刪除未命名的變數").errmsg << endl;
+			cout << createerrmsg(i - 1, "嘗試刪除未命名的變數").errmsg << endl;
 			setConsoleColor(7);
 		}
 		else {
@@ -80,6 +80,100 @@ void CommandParser::Inputcommand(string in) {
 			}
 		}
 	}
+}
+BigDecimal CommandParser::Getcommandvalue(string in, BigDecimal&) {
+	signal(SIGINT, signal_callback_handler);
+
+	unsigned long long i = 0;
+	keeprun = true;
+	retmsg setmode = checkset(in, i);
+	if (setmode.mode == 0) {
+		i = 0;
+	}
+	else {
+		cout << BIAS_BLANK+in << endl;
+		setConsoleColor(FOREGROUND_RED);
+		cout << createerrmsg(i - 1, "非std input模式不支援設定變數").errmsg << endl;
+		setConsoleColor(7);
+		return 0;
+	}
+	retmsg msg = ProceedCommand(in, i, 8);
+	if (!keeprun) {
+		cout << in << endl;
+		setConsoleColor(6);
+		cout << "SIGNAL CAUGHT." << endl;
+		setConsoleColor(7);
+	}
+	else if (!msg.ok) {
+		cout << BIAS_BLANK + in << endl;
+		setConsoleColor(FOREGROUND_RED);
+		cout << msg.errmsg << endl;
+		setConsoleColor(7);
+	}
+	else {
+		if (msg.value.IsInt) {
+			return msg.value.BigIntVal;
+		}
+		else {
+			return msg.value.BigDecimalVal;
+		}
+	}
+}
+BigInt CommandParser::Getcommandvalue(string in, BigInt&) {
+	signal(SIGINT, signal_callback_handler);
+
+	unsigned long long i = 0;
+	keeprun = true;
+	retmsg setmode = checkset(in, i);
+	if (setmode.mode == 0) {
+		i = 0;
+	}
+	else {
+		cout << BIAS_BLANK + in << endl;
+		setConsoleColor(FOREGROUND_RED);
+		cout << createerrmsg(i - 1, "非std input模式不支援設定變數").errmsg << endl;
+		setConsoleColor(7);
+		return 0;
+	}
+	retmsg msg = ProceedCommand(in, i, 8);
+	if (!keeprun) {
+		cout << in << endl;
+		setConsoleColor(6);
+		cout << "SIGNAL CAUGHT." << endl;
+		setConsoleColor(7);
+	}
+	else if (!msg.ok) {
+		cout << BIAS_BLANK + in << endl;
+		setConsoleColor(FOREGROUND_RED);
+		cout << msg.errmsg << endl;
+		setConsoleColor(7);
+	}
+	else {
+		if (msg.value.IsInt) {
+			return msg.value.BigIntVal;
+		}
+		else {
+			return msg.value.BigDecimalVal;
+		}
+	}
+}
+
+bool CommandParser::IsCommand(string& in)
+{
+	unsigned long long int i = 0;
+	blandslide(in, i);
+	if (i >= in.size()) {
+		return true;
+	}
+	if (in[i] != '+' && in[i] != '-' && !isnumeric(in[i])) {
+		return true;
+	}
+	for (; i < in.length(); i++) {
+		if (!isnumeric(in[i]) && in[i] != '.') {
+			return true;
+		}
+	}
+	return false;
 }
 
 /*
@@ -243,7 +337,7 @@ CommandParser::retmsg CommandParser::getvalue(string& cmd, unsigned long long& i
 	}
 	string res = "";
 	while (i < cmd.length() && (cmd[i] == '+' || cmd[i] == '-')) {
-		if (cmd[i] == '-' && res == "-" || cmd[i] == '+' && (res == "+"|| res == "")) {
+		if (cmd[i] == '-' && res == "-" || cmd[i] == '+' && (res == "+" || res == "")) {
 			res = '+';
 		}
 		else {
@@ -319,7 +413,7 @@ CommandParser::retmsg CommandParser::getvalue(string& cmd, unsigned long long& i
 				return msg;
 			}
 			else {
-				return createerrmsg(i-1, "未命名的變數");
+				return createerrmsg(i - 1, "未命名的變數");
 			}
 
 		}
@@ -335,6 +429,7 @@ CommandParser::retmsg CommandParser::calculate(BigValue& val1, string& operatorv
 	retmsg msg;
 	if (val1.IsInt && val2.IsInt) {
 		msg.ok = true;
+		msg.value.IsInt = true;
 		if (operatorval == "+") {
 			msg.value.BigIntVal = val1.BigIntVal + val2.BigIntVal;
 		}
@@ -349,6 +444,7 @@ CommandParser::retmsg CommandParser::calculate(BigValue& val1, string& operatorv
 		}
 		else if (operatorval == "^") {
 			msg.value.BigIntVal = val1.BigIntVal.Power(val2.BigIntVal);
+
 		}
 
 	}
@@ -426,7 +522,7 @@ bool CommandParser::isint(string& in) {
 }
 //mode = 0:normal  mode = 1:set  mode = 2:set specific  mode = 3:del
 CommandParser::retmsg CommandParser::checkset(string& cmd, unsigned long long int& i) {
-	retmsg msg,msg2;
+	retmsg msg, msg2;
 	msg = getvalue(cmd, i, false);
 	msg.mode = 0;
 	if (i < cmd.length()) {
@@ -466,6 +562,6 @@ CommandParser::retmsg CommandParser::checkset(string& cmd, unsigned long long in
 			}
 		}
 	}
-	
+
 	return msg;
 }

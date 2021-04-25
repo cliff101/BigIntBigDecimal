@@ -26,6 +26,9 @@ class CommandParser {
 public:
 	CommandParser();
 	void Inputcommand(string);
+	BigDecimal Getcommandvalue(string, BigDecimal&);
+	BigInt Getcommandvalue(string, BigInt&);
+	bool IsCommand(string&);
 private:
 	struct BigValue {
 		bool IsInt = true;

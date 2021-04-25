@@ -4,6 +4,7 @@
 #include "CommandParser.h"
 #include <cmath>
 #include <string>
+#include "BigValue.h"
 
 using namespace std;
 
@@ -12,8 +13,10 @@ using namespace std;
 //3. CommandParser debug
 
 int main() {
-	//BigInt aa("13322"), bb("5"),cc,dd(13322.12345),ee(5);
-	//BigDecimal ff;
+	BigInt aa("13317+5"), bb("5"),dd(13322.12345),ee(5);
+	//BigInt cc;
+	//BigDecimal ff("172361.123");
+	//BigValue f;
 	//cc = dd * ee;
 	//BigDecimal::precision = 100;
 	//for (int i = 0; i < 1; i++) {
@@ -22,7 +25,9 @@ int main() {
 	//}
 
 	//cc = aa-bb;
-	//cout << aa.Getvalreal() << endl;
+	//cc = cc + ff;
+	//cc = "100!";
+	cout << aa.Getvalreal() << endl;
 	//cout << bb.Getvalreal() << endl;
 	//cout << cc.Getvalreal() << endl;
 	//d = (c != 0);
@@ -42,6 +47,8 @@ int main() {
 
 	string cmd;
 	CommandParser cmdps;
+
+
 	while (true) {
 		cout << ">>> ";
 		getline(cin, cmd);
@@ -50,8 +57,5 @@ int main() {
 		cmdps.Inputcommand(cmd);
 		//cin >> cmd;
 	}
-
-
 	return 0;
 }
-

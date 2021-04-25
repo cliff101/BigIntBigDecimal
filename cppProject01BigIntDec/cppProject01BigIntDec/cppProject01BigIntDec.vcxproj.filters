@@ -38,5 +38,15 @@
     <ClInclude Include="CommandParser.h">
       <Filter>標頭檔</Filter>
     </ClInclude>
+    <ClInclude Include="BigValue.h">
+      <Filter>標頭檔</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\CPP程式設計題-大數計算機.pdf" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\範例測資.txt" />
+    <Text Include="..\範例解答.txt" />
   </ItemGroup>
 </Project>

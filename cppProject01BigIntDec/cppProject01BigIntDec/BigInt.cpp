@@ -1,5 +1,6 @@
 #include "BigInt.h"
 #include "BigDecimal.h"
+#include "CommandParser.h"
 
 BigInt::BigInt() {
 	val = vector<short>(1, 0);
@@ -8,25 +9,31 @@ BigInt::BigInt() {
 	isundefined = false;
 }
 BigInt::BigInt(string in) {
-	in = stringprettify(in);
-	string strsign = "";
-	if (in[0] == '+' || in[0] == '-') {
-		strsign = in[0];
-		in.erase(in.begin());
-	}
-	val = vector<short>(in.length());
-	for (unsigned long long int i = 0; i < in.length(); i++) {
-		val[i] = in[i] - '0';
-	}
-	if (strsign == "-") {
-		sign = false;
+	CommandParser temp;
+	if (temp.IsCommand(in)) {
+		*this = temp.Getcommandvalue(in, *this);
 	}
 	else {
-		sign = true;
+		in = stringprettify(in);
+		string strsign = "";
+		if (in[0] == '+' || in[0] == '-') {
+			strsign = in[0];
+			in.erase(in.begin());
+		}
+		val = vector<short>(in.length());
+		for (unsigned long long int i = 0; i < in.length(); i++) {
+			val[i] = in[i] - '0';
+		}
+		if (strsign == "-") {
+			sign = false;
+		}
+		else {
+			sign = true;
+		}
+		erasezero(*this);
+		isinf = false;
+		isundefined = false;
 	}
-	erasezero(*this);
-	isinf = false;
-	isundefined = false;
 }
 BigInt::BigInt(const BigInt& in) {
 	val = vector<short>(in.val);
@@ -63,25 +70,31 @@ BigInt::BigInt(const BigDecimal& in) {
 }
 
 BigInt BigInt::operator=(string in) {
-	in = stringprettify(in);
-	string strsign = "";
-	if (in[0] == '+' || in[0] == '-') {
-		strsign = in[0];
-		in.erase(in.begin());
-	}
-	val = vector<short>(in.length());
-	for (unsigned long long int i = 0; i < in.length(); i++) {
-		val[i] = in[i] - '0';
-	}
-	if (strsign == "-") {
-		sign = false;
+	CommandParser temp;
+	if (temp.IsCommand(in)) {
+		*this = temp.Getcommandvalue(in, *this);
 	}
 	else {
-		sign = true;
+		in = stringprettify(in);
+		string strsign = "";
+		if (in[0] == '+' || in[0] == '-') {
+			strsign = in[0];
+			in.erase(in.begin());
+		}
+		val = vector<short>(in.length());
+		for (unsigned long long int i = 0; i < in.length(); i++) {
+			val[i] = in[i] - '0';
+		}
+		if (strsign == "-") {
+			sign = false;
+		}
+		else {
+			sign = true;
+		}
+		erasezero(*this);
+		isinf = false;
+		isundefined = false;
 	}
-	erasezero(*this);
-	isinf = false;
-	isundefined = false;
 	return *this;
 }
 BigInt BigInt::operator=(int ini) {
@@ -114,7 +127,7 @@ BigInt BigInt::operator=(const BigDecimal& in) {
 	return *this;
 }
 
-BigInt BigInt::operator+(const BigInt& in) {
+BigInt BigInt::operator+(const BigInt& in) const {
 	BigInt out;
 	if (isundefined || in.isundefined || isinf && in.isinf && (!sign && in.sign || sign && !in.sign)) {
 		out.isundefined = true;
@@ -167,7 +180,7 @@ BigInt BigInt::operator+(const BigInt& in) {
 	out.val = result;
 	return out;
 }
-BigInt BigInt::operator-(const BigInt& in) {
+BigInt BigInt::operator-(const BigInt& in) const {
 	BigInt out;
 	if (isundefined || in.isundefined || isinf && in.isinf && (sign && in.sign || !sign && !in.sign)) {
 		out.isundefined = true;
@@ -229,7 +242,7 @@ BigInt BigInt::operator-(const BigInt& in) {
 	erasezero(out);
 	return out;
 }
-BigInt BigInt::operator*(const BigInt& in) {
+BigInt BigInt::operator*(const BigInt& in) const {
 	BigInt out;
 	if (isundefined || in.isundefined) {
 		out.isundefined = true;
@@ -265,7 +278,7 @@ BigInt BigInt::operator*(const BigInt& in) {
 	erasezero(out);
 	return out;
 }
-BigInt BigInt::operator/(const BigInt& in) {
+BigInt BigInt::operator/(const BigInt& in) const {
 	BigInt a, out;
 	if (isundefined || in.isundefined || isinf && in.isinf || !in.isinf && !isinf && in.val.size() == 1 && BigInt(in) == 0 && val.size() == 1 && *this == 0) {
 		out.isundefined = true;
@@ -329,7 +342,7 @@ BigInt BigInt::operator/(const BigInt& in) {
 	erasezero(out);
 	return out;
 }
-BigInt BigInt::operator%(const BigInt& in) {
+BigInt BigInt::operator%(const BigInt& in) const {
 	return *this - (BigInt(in) * (*this / in));
 }
 
@@ -549,7 +562,7 @@ BigInt BigInt::operator%=(const BigInt& in) {
 	return *this;
 }
 
-bool BigInt::operator==(const BigInt& in) {
+bool BigInt::operator==(const BigInt& in) const {
 	if (isundefined || in.isundefined) {
 		return false;
 	}
@@ -564,13 +577,13 @@ bool BigInt::operator==(const BigInt& in) {
 	}
 	return true;
 }
-bool BigInt::operator!=(const BigInt& in) {
+bool BigInt::operator!=(const BigInt& in) const {
 	if (isundefined || in.isundefined) {
 		return false;
 	}
 	return !(*this == in);
 }
-bool BigInt::operator>(const BigInt& in) {
+bool BigInt::operator>(const BigInt& in)const {
 	if (isundefined || in.isundefined) {
 		return false;
 	}
@@ -579,7 +592,7 @@ bool BigInt::operator>(const BigInt& in) {
 	}
 	return compair(*this, in) == 1;
 }
-bool BigInt::operator<(const BigInt& in) {
+bool BigInt::operator<(const BigInt& in) const {
 	if (isundefined || in.isundefined) {
 		return false;
 	}
@@ -589,7 +602,7 @@ bool BigInt::operator<(const BigInt& in) {
 	}
 	return compair(*this, in) == -1;
 }
-bool BigInt::operator<=(const BigInt& in) {
+bool BigInt::operator<=(const BigInt& in) const {
 	if (isundefined || in.isundefined) {
 		return false;
 	}
@@ -598,7 +611,7 @@ bool BigInt::operator<=(const BigInt& in) {
 	}
 	return compair(*this, in) <= 0;
 }
-bool BigInt::operator>=(const BigInt& in) {
+bool BigInt::operator>=(const BigInt& in) const {
 	if (isundefined || in.isundefined) {
 		return false;
 	}
@@ -614,7 +627,7 @@ BigInt BigInt::operator++(int) {
 	return temp;
 }
 
-BigDecimal BigInt::Power(BigDecimal in) {
+BigDecimal BigInt::Power(BigDecimal& in) {
 	BigInt out = *this;
 	BigInt up = in.GetBigIntup();
 	BigInt down = in.GetBigIntdown();
@@ -684,9 +697,22 @@ BigDecimal BigInt::Power(BigDecimal in) {
 	}
 	return BigDecimal(out);
 }
+BigInt BigInt::Power(BigInt& in) {
+	BigInt out = *this;
+	if (in > 0) {
+		BigInt cp = out;
+		for (BigInt i = 0; i < in - 1; i += 1) {
+			out *= cp;
+		}
+	}
+	else {
+		out = 1;
+	}
+	return out;
+}
 
 //等於回傳true
-bool BigInt::checkbig(const BigInt& a, const  BigInt& b, bool isunsigned) {
+bool BigInt::checkbig(const BigInt& a, const  BigInt& b, bool isunsigned) const {
 	if (!isunsigned && a.sign && !b.sign || BigInt(a) == BigInt(0) && BigInt(b) == 0) {
 		return true;
 	}
@@ -717,7 +743,7 @@ bool BigInt::checkbig(const BigInt& a, const  BigInt& b, bool isunsigned) {
 	}
 	return res;
 }
-short BigInt::compair(const BigInt& a, const  BigInt& b) {
+short BigInt::compair(const BigInt& a, const  BigInt& b) const{
 	if (BigInt(a) == BigInt(0) && BigInt(b) == 0) {
 		return 0;
 	}
@@ -751,7 +777,7 @@ short BigInt::compair(const BigInt& a, const  BigInt& b) {
 	}
 	return res;
 }
-void BigInt::erasezero(BigInt& a) {
+void BigInt::erasezero(BigInt& a) const {
 	while (a.val.size() > 0 && a.val[0] == 0) {
 		a.val.erase(a.val.begin());
 	}
