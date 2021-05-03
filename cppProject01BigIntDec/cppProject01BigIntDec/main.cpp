@@ -1,4 +1,4 @@
-#include <iostream>
+﻿#include <iostream>
 #include "BigInt.h"
 #include "BigDecimal.h"
 #include "CommandParser.h"
@@ -13,44 +13,42 @@ using namespace std;
 //3. CommandParser debug
 
 int main() {
-	BigInt aa("13317+5"), bb("5"),dd(13322.12345),ee(5);
-	//BigInt cc;
-	//BigDecimal ff("172361.123");
-	//BigValue f;
-	//cc = dd * ee;
-	//BigDecimal::precision = 100;
-	//for (int i = 0; i < 1; i++) {
-	//	ff = aa.pow(1.5);
-	//	cout << ff.Getvalreal() << endl;
-	//}
+	
+	/*BigInt x;
+	BigDecimal y;
 
-	//cc = aa-bb;
-	//cc = cc + ff;
-	//cc = "100!";
-	cout << aa.Getvalreal() << endl;
-	//cout << bb.Getvalreal() << endl;
-	//cout << cc.Getvalreal() << endl;
-	//d = (c != 0);
-	//a %= 15;
-	//c = a % b;
-	//BigDecimal a(BigInt(0)/BigInt(0)), b("-1.45435345"), c;
-	//BigDecimal d(1.234);
-	//d = a;
-	//a = 5;
-	//cout << a.Getvalreal() << endl;
-	//cout << b.Getvalreal() << endl;
-	//c = a + b;
-	//c = "123";
-	//cout << a.Getvalreal() << endl;
-	//cout << b.Getvalreal() << endl;
-	//cout << c.Getvalreal() << endl;
+	cin >> x; // 輸入 123456789
+	cin >> y; // 輸入 3.1415926
+
+	cout << x + y << endl;
+	cout << x - y << endl;
+	cout << x * y << endl;
+	cout << x / y << endl;
+	
+	BigInt x = "123 * 8 + 456";
+	BigDecimal y = "-1.0 / 3 - 45 / 13.0";
+
+	vector<BigValue*> nums;
+	nums.push_back(&x);
+	nums.push_back(&y);
+	for (const auto& num : nums)
+		cout << *num << endl;
+	*/
+	/*
+	vector<BigValue*> nums;
+	nums.push_back(&a);
+	nums.push_back(&aa);
+	for (const auto& num : nums)
+		cout << *num << endl;
+	*/
 
 	string cmd;
 	CommandParser cmdps;
 
+	//BigDecimal::precision = 100;
 
 	while (true) {
-		cout << ">>> ";
+		cout << "( ·▽·)∕ ";
 		getline(cin, cmd);
 		//
 		//cmdps.Inputcommand("15 * 20");

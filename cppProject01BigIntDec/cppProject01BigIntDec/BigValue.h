@@ -6,5 +6,10 @@ using namespace std;
 
 class BigValue {
 public:
-	//virtual friend ostream& operator<<(ostream& ccout, BigValue in) = 0;
+	friend ostream& operator<<(ostream& ccout,const BigValue& in) {
+		in.Print(ccout);
+		return ccout;
+	}
+protected:
+	virtual void Print(ostream& ccout) const {};
 };
